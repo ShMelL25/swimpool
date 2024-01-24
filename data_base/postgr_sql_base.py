@@ -132,6 +132,9 @@ class SQL_request(object):
             ref = 'Вы не зарегестрированы'
             
         return ref
+    
+    def request_train(self):
+        
             
         
         

@@ -35,3 +35,9 @@ async def del_handler(msg: Message):
     print(msg.text)
     ret = SQL_request().del_train(text=msg.text, telegram_id=msg.from_user.id)
     await msg.reply(ret)   
+    
+@router.message(Command("doc"))
+async def del_handler(msg: Message):
+    print(msg.text)
+    ret = SQL_request().del_train(text=msg.text, telegram_id=msg.from_user.id)
+    await msg.reply(ret)   
