@@ -41,3 +41,11 @@ async def del_handler(msg: Message):
     print(msg.text)
     ret = SQL_request().del_train(text=msg.text, telegram_id=msg.from_user.id)
     await msg.reply(ret)   
+    
+@router.message(Command("dev_info"))
+async def dev_request(msg: Message):
+    print(msg.text)
+    t = msg.text
+    t = t.split(' ;')[1].split(';')
+    ret = SQL_request().request_dev(req=t[0], password=t[1])
+    await msg.reply(ret)  

@@ -133,7 +133,19 @@ class SQL_request(object):
             
         return ref
     
-    def request_train(self):
+    def request_dev(self, req, password):
+        if password == 'Santaclausoffice6':
+            engine = self.create_engine_postgr_sql()
+            data = req
+            ret = pd.read_sql(data, engine).to_string()
+            
+        else:
+            ret = 'Неправильный пароль'
+            
+        return ret
+        
+        
+        
         
             
         
