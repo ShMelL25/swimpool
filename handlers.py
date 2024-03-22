@@ -37,10 +37,10 @@ async def del_handler(msg: Message):
     await msg.reply(ret)   
     
 @router.message(Command("doc"))
-async def del_handler(msg: Message):
+async def doc_handler(msg: Message):
     print(msg.text)
-    ret = SQL_request().del_train(text=msg.text, telegram_id=msg.from_user.id)
-    await msg.reply(ret)   
+    ret = SQL_request().doc_gen()
+    await msg.reply_document('log.xlsx')
     
 @router.message(Command("dev_info"))
 async def dev_request(msg: Message):

@@ -9,26 +9,15 @@ class SQL_request(object):
     
     def __init__(self):
         
-        self.create_engine_postgr_sql
-        self.register_user
-        self.del_train
-        self.answer_
-        
-        
-    def create_engine_postgr_sql(self):
-       
-        engine = create_engine(config.sql_url)
-        
-        return engine
+        self. engine = create_engine(config.sql_url)        
     
     def register_user(self, username:str, telgram_id:str):
         
-        engine = self.create_engine_postgr_sql()
         data = f'select telegram_id from users where telegram_id={telgram_id}'
         
-        if pd.read_sql(data, engine).shape[0] == 0:
+        if pd.read_sql(data, self.engine).shape[0] == 0:
            
-            with engine.begin() as cnx:
+            with self.engine.begin() as cnx:
                 ret = 'Вы успешно зарегестрированы!'
                 insert_sql = sqlalchemy.text(
                     f"INSERT INTO users (date_reg, user_name, telegram_id) values ('{datetime.now().date()}', '{username}', {telgram_id})"
@@ -41,12 +30,11 @@ class SQL_request(object):
         return ret
     
     def add_train(self, text, telegram_id):
-        engine = self.create_engine_postgr_sql()
         text = text[5:].split('; ')
         z = []
         a=[]
         data = f'select id from users where telegram_id={telegram_id}'
-        df = pd.read_sql(data, engine)
+        df = pd.read_sql(data, self.engine)
         
         
         for i in text:
@@ -60,7 +48,7 @@ class SQL_request(object):
         if df.shape[0] != 0:
             
             
-            with engine.begin() as cnx:
+            with self.engine.begin() as cnx:
                 
                 for i in range(len(z[0])):
                     
@@ -82,28 +70,30 @@ class SQL_request(object):
         return ref
     
     def answer_(self, arr, id_):
-        engine = self.create_engine_postgr_sql()
         
-        with engine.begin() as cnx:
+        with self.engine.begin() as cnx:
             insert_sql = f'''
                             select * from time_user
                             where user_id = {id_} and time_train = time'{arr[0]}' and day_train = '{arr[1]}'
                         '''
                       
-            if pd.read_sql(insert_sql, engine).shape[0] == 0:
+            if pd.read_sql(insert_sql, self.engine).shape[0] == 0:
                 return True
             else:
                 return False
             
-            
+    def doc_gen(self):
+        data = 'select * from time_user'
+        df = pd.read_sql(data, self.engine)
+        df.to_excel('../log.xlsx')
     
     def del_train(self, text, telegram_id):
-        engine = self.create_engine_postgr_sql()
+
         text = text[5:].split('; ')
         z = []
         a=[]
         data = f'select id from users where telegram_id={telegram_id}'
-        df = pd.read_sql(data, engine)
+        df = pd.read_sql(data, self.engine)
         
         
         for i in text:
@@ -117,7 +107,7 @@ class SQL_request(object):
         if df.shape[0] != 0:
             
             
-            with engine.begin() as cnx:
+            with self.engine.begin() as cnx:
                  
                 insert_sql = sqlalchemy.text(
                     f'''DELETE FROM time_user
