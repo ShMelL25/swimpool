@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 
 
-class SQL_request(object):
+class SQL_request:
     
     def __init__(self):
         
@@ -83,9 +83,16 @@ class SQL_request(object):
                 return False
             
     def doc_gen(self):
-        data = 'select * from time_user'
+        data = '''select 
+                t2.user_name,
+                t1.day_train,
+                t1.time_train,
+                t1.count_person
+
+                from time_user t1
+                join users t2 on t1.user_id=t2.id'''
         df = pd.read_sql(data, self.engine)
-        df.to_excel('../log.xlsx')
+        df.to_excel('log.xlsx')
     
     def del_train(self, text, telegram_id):
 
@@ -125,9 +132,9 @@ class SQL_request(object):
     
     def request_dev(self, req, password):
         if password == 'Santaclausoffice6':
-            engine = self.create_engine_postgr_sql()
+            
             data = req
-            ret = pd.read_sql(data, engine).to_string()
+            ret = pd.read_sql(data, self.engine).to_string()
             
         else:
             ret = 'Неправильный пароль'

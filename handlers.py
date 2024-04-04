@@ -39,8 +39,8 @@ async def del_handler(msg: Message):
 @router.message(Command("doc"))
 async def doc_handler(msg: Message):
     print(msg.text)
-    ret = SQL_request().doc_gen()
-    await msg.reply_document('log.xlsx')
+    SQL_request().doc_gen()
+    await msg.send('log.xlsx')
     
 @router.message(Command("dev_info"))
 async def dev_request(msg: Message):

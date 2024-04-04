@@ -2,3 +2,4 @@ sqlalchemy
 aiogram
 pandas
 psycopg2
+openpyxl
